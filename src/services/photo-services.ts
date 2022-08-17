@@ -3,9 +3,9 @@ import { Photo } from "../models/photo";
 
 
 interface PhotoServices {
-    uodateLikes(id:string, inc:number): Promise<Photo>;
+    // updateLikes(id:string, inc:number): Promise<Photo>;
     createPhoto(photo:Photo): Promise<string>;
-    createComment(id:string, comment:string): Promise<Photo>;
+    // createComment(id:string, comment:string): Promise<Photo>;
     getAllPhotos():Promise<Photo[]>
 }
 
@@ -17,3 +17,24 @@ export const getAllPhotos = async(): Promise<Photo[]> =>{
     return photos
 };
 
+export const createPhoto = async (photo: Photo): Promise<string> => {
+    try{
+        const res = await photoCollection.insertOne(photo);
+        return res.insertedId.toString();
+    }   catch(error) {
+        return "something went wrong"
+    }
+}
+
+
+// export const updateLikes = async (): Promise<Photo> => {
+//     id: string, 
+//     inc: number = 1
+    
+// }
+
+// export const createComment = async(id: string, comment: string): Promise<Photo> =>{
+//     return null
+// }
+
+export const photoServices: PhotoServices = {getAllPhotos, createPhoto, }
