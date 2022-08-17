@@ -1,16 +1,14 @@
-import express, {Request, Response} from "express"
+import express, {Request,Response} from "express"
 import cors from "cors"
+import { photoRouter } from "./src/routers/photo-router"
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.get("/", (req: Request, res: Response)=> {
-    res.status(200).send("Hello")
-})
+app.use('/photos', photoRouter)
 
-const PORT:number = 5001
-
-app.listen(PORT, ()=> {
-    console.log(`Server Running on ${PORT}`)
+const PORT = 5001
+app.listen(PORT,()=> {
+    console.log("we started on port",PORT)
 })
