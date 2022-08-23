@@ -20,3 +20,20 @@ photoRouter.post("/", async (req: Request, res: Response) =>{
 
     res.status(201).send({insertedId});
 })
+
+
+//PATCH /photo/{PHOTO_ID} with a body of {likes: 1}
+photoRouter.patch("/:id", async (req: Request, res: Response) => {
+    console.log("patch")
+    const {id} = req.params
+    const { likes } = req.body
+    console.log("likes", likes)
+
+    if(!likes){
+        res.status(400).send("Likes are required")
+    }
+    
+    const photo = await photoServices.updateLikes(id, likes)
+
+    res.status(200).send(photo)
+})

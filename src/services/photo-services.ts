@@ -1,9 +1,10 @@
 import { db } from "../db/db";
 import { Photo } from "../models/photo";
+import {ObjectId} from 'mongodb';
 
 
 interface PhotoServices {
-    // updateLikes(id:string, inc:number): Promise<Photo>;
+    updateLikes(id:string, inc:number): Promise<Photo>;
     createPhoto(photo:Photo): Promise<string>;
     // createComment(id:string, comment:string): Promise<Photo>;
     getAllPhotos():Promise<Photo[]>
@@ -26,15 +27,21 @@ export const createPhoto = async (photo: Photo): Promise<string> => {
     }
 }
 
-
-// export const updateLikes = async (): Promise<Photo> => {
-//     id: string, 
-//     inc: number = 1
+export const updateLikes = async (    
+    id: string, 
+    inc: number = 1
+): Promise<Photo> => {
+    const res = await photoCollection.findOneAndUpdate(
+        {_id: new ObjectId(id) }, 
+        {$inc: {likes: inc} }
+    )
     
-// }
+    const updatedPhoto = res.value as Photo;
+    return updatedPhoto;
+}
 
 // export const createComment = async(id: string, comment: string): Promise<Photo> =>{
 //     return null
 // }
 
-export const photoServices: PhotoServices = {getAllPhotos, createPhoto, }
+export const photoServices: PhotoServices = {getAllPhotos, createPhoto, updateLikes }
